@@ -21,14 +21,6 @@ public class Task8 implements Task{
         }
     }
 
-    private boolean isOpenBracket(Character ch) {
-        return ch.equals('(');
-    }
-
-    private boolean isCloseBracket(Character ch) {
-        return ch.equals(')');
-    }
-
     private String normalize(String input) {
         if (input == null) {
             return "";
@@ -45,25 +37,16 @@ public class Task8 implements Task{
         String currentNumber = "";
         for (int i = 0; i < expression.length(); i++) {
             char ch  = expression.charAt(i);
-            if (isOpenBracket(ch)) {
-                int j = i + 1;
-                for (; j < expression.length(); j++) {
-                    char chj = expression.charAt(j);
-                    if (isCloseBracket(chj)) {
-                        break;
-                    }
-                }
-                String subExpr = expression.substring(i + 1, j);
-                System.out.println("got sub string: " + subExpr);
-                stack.add(processExpression(subExpr));
-                i = j;
-                continue;
-            }
 
             if (isNumPart(ch)) {
                 currentNumber += ch;
             } else {
-                double parsed = Double.parseDouble(currentNumber);
+                double parsed = 0.0;
+                try {
+                    parsed = Double.parseDouble(currentNumber);
+                } catch (Exception e) {
+                    continue;
+                }
 
                 if (nextNumberNegative) {
                     parsed = -parsed;
@@ -72,13 +55,13 @@ public class Task8 implements Task{
 
                 if (plannedMul) {
                     double b = stack.removeLast();
-                    parsed *= b;
+                    parsed = b * parsed;
                     plannedMul = false;
                 }
 
                 if (plannedDiv) {
                     double b = stack.removeLast();
-                    parsed /= b;
+                    parsed = b / parsed;
                     plannedDiv = false;
                 }
                 stack.add(parsed);
@@ -102,7 +85,13 @@ public class Task8 implements Task{
             }
         }
         if (currentNumber != "") {
-            double parsed = Double.parseDouble(currentNumber);
+            double parsed = 0.0;
+            try {
+                parsed = Double.parseDouble(currentNumber);
+            } catch (Exception e) {
+                System.out.println("Shouldnt be there!");
+            }
+
 
             if (nextNumberNegative) {
                 parsed = -parsed;
@@ -110,12 +99,12 @@ public class Task8 implements Task{
 
             if (plannedMul) {
                 double b = stack.removeLast();
-                parsed *= b;
+                parsed = b * parsed;
             }
 
             if (plannedDiv) {
                 double b = stack.removeLast();
-                parsed /= b;
+                parsed = b / parsed;
             }
             stack.add(parsed);
         }
