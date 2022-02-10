@@ -29,9 +29,9 @@ public class Main {
     public static void main(String[] args) {
         // Выполнить таск с конкретным номером
         // индексация тасков начинается с 1
-         executeNth(8);
+        // executeNth(8);
 
         // Выполнить все таски
-//        executeAll();
+        executeAll();
     }
 }
