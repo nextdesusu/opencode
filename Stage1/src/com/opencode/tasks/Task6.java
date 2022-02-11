@@ -8,7 +8,7 @@ public class Task6 implements Task {
 
     @Override
     public void execute() {
-        SortedMap<Character, Integer> map = new TreeMap<>();
+        Map<Character, Integer> map = new LinkedHashMap<>();
         src.chars()
                 .mapToObj((ch) -> (char) ch)
                 .forEach((item) -> {
