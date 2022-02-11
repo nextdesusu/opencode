@@ -14,4 +14,21 @@ public class TaskUtil {
             return null;
         }
     }
+
+    public static class CalcTest<T, E> {
+        T expr;
+        E value;
+        public CalcTest(T expr, E value) {
+            this.value = value;
+            this.expr = expr;
+        }
+
+        public E getValue() {
+            return value;
+        }
+
+        public T getExpr() {
+            return expr;
+        }
+    }
 }

@@ -9,8 +9,10 @@ public class Main {
 
     private static void executeTask(Task task) {
         System.out.println("Демонстрация задачи: " + task.getClass().getSimpleName());
+        System.out.println("\n\n\n");
         task.execute();
-        System.out.println("********************************************\n\n\n");
+        System.out.println("\n\n\n");
+        System.out.println("********************************************");
     }
 
     private static void executeAll() {
@@ -29,7 +31,7 @@ public class Main {
     public static void main(String[] args) {
         // Выполнить таск с конкретным номером
         // индексация тасков начинается с 1
-        // executeNth(8);
+        // executeNth(9);
 
         // Выполнить все таски
         executeAll();
