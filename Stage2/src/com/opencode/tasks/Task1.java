@@ -1,5 +1,6 @@
 package tasks;
 
+import java.math.BigInteger;
 import java.util.stream.Stream;
 
 public class Task1 implements Runnable {
@@ -18,7 +19,7 @@ public class Task1 implements Runnable {
 //        test(27, 196418);
     }
 
-    long computeFib(int until) {
+    BigInteger computeFib(int until) {
 //        long nMinus2 = 0, nMinus1 = 0, n = 1;
 //        for (int i = 0; i < until; i++){
 //            nMinus2 = nMinus1;
@@ -26,55 +27,55 @@ public class Task1 implements Runnable {
 //            n = nMinus2 + nMinus1;
 //        }
 // Снизу примерно то же самое.
-
+        // вроде норм считает до n = 3000
         return Stream
                 .iterate(FibTriple.start(), (triple) -> FibTriple.create(triple.getCurrent(), triple.getNext()))
+                .map((fibTriple) -> fibTriple.getCurrent())
                 .skip(until)
                 .findFirst()
-                .get()
-                .getCurrent();
+                .get();
     }
 
     private static class FibTriple {
-        private final long prev;
-        private final long current;
-        private final long next;
+        private final BigInteger prev;
+        private final BigInteger current;
+        private final BigInteger next;
 
-        private FibTriple(long prev, long current, long next) {
+        private FibTriple(BigInteger prev, BigInteger current, BigInteger next) {
             this.prev = prev;
             this.current = current;
             this.next = next;
         }
 
         public static FibTriple start() {
-            return create(0, 0, 1);
+            return create(new BigInteger("0"), new BigInteger("0"), new BigInteger("1"));
         }
 
-        public static FibTriple create(long prev, long current) {
-            return create(prev, current, prev + current);
+        public static FibTriple create(BigInteger prev, BigInteger current) {
+            return create(prev, current, prev.add(current));
         }
 
-        public static FibTriple create(long prev, long current, long next) {
+        public static FibTriple create(BigInteger prev, BigInteger current, BigInteger next) {
             return new FibTriple(prev, current, next);
         }
 
-        public long getNext() {
+        public BigInteger getNext() {
             return next;
         }
 
-        public long getCurrent() {
+        public BigInteger getCurrent() {
             return current;
         }
 
-        public long getPrev() {
+        public BigInteger getPrev() {
             return prev;
         }
     }
 
     private void test(int nth, long shouldBe) {
         System.out.println("fib: " + nth + " should be: " + shouldBe);
-        long actual = computeFib(nth);
-        if (actual != shouldBe) {
+        BigInteger actual = computeFib(nth);
+        if (!actual.equals(new BigInteger(Long.toString(shouldBe)))) {
             throw new RuntimeException(actual + " expected: " + shouldBe);
         } else {
             System.out.println("ok!");

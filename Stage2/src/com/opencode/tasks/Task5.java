@@ -6,12 +6,25 @@ import java.util.stream.Collectors;
 public class Task5 implements Runnable {
     @Override
     public void run() {
-        Sentence sentence = new Sentence(new String[] {"word1", "word2", "wormd3"});
+        Sentence sentence = Sentence.from(TaskUtil.getUserInput("Введите набор слов"));
+
         System.out.println("Модель создана: " + sentence);
+        System.out.println("original: " + sentence.getOriginalSentence());
+        System.out.println("1fs word: " + sentence.getWordByPosition(0).getOriginalWord());
+        System.out.println("last word: " + sentence.getWordByPosition(sentence.getWordsCount() - 1).getOriginalWord());
     }
 
-    public class Sentence {
+    public static class Sentence {
         private Word[] words;
+
+        public static Sentence from(String input) {
+            return new Sentence(
+                    Arrays
+                        .stream(input.split("\\s"))
+                        .filter((word) -> !" ".equals(word))
+                        .toArray(String[]::new)
+                );
+        }
 
         public Sentence(String[] wordsRaw) {
             this.words = Arrays

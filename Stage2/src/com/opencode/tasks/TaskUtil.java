@@ -45,9 +45,8 @@ public class TaskUtil {
     }
 
     public static char askForSymbol(String message) {
-        System.out.println(message);
         try {
-            return getUserInput().charAt(0);
+            return getUserInput(message).charAt(0);
         } catch (Exception e) {
             notifyError(e);
             throw new RuntimeException("Не получилось!");
