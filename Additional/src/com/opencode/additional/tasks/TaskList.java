@@ -1,6 +1,7 @@
 package com.opencode.additional.tasks;
 
 public class TaskList <T> {
+    // Начальный размер массива
     private static int DEFAULT_SIZE = 3;
 
     private T[] container;
@@ -41,7 +42,7 @@ public class TaskList <T> {
     public void insertAt(int index, T el) {
         maybeThrow(index);
         maybeGrow();
-        for (int i = length; i >= index; i--) {
+        for (int i = length - 1; i > index - 1; i--) {
             container[i + 1] = container[i];
         }
         container[index] = el;
@@ -53,6 +54,7 @@ public class TaskList <T> {
      * @param index место удаления
      */
     public void removeAt(int index) {
+        maybeThrow(index);
         for (int i = index + 1; i < length; i++) {
             container[i - 1] = container[i];
         }
@@ -101,16 +103,13 @@ public class TaskList <T> {
         int middleIndex = (left + right) / 2;
         T middleElem = container[middleIndex];
         while (i <= j) {
-            T iThElem = container[i];
-            T jThElem = container[j];
-
-            for (;cmp.compare(iThElem, middleElem) == Ordering.LESSER; i++) {
+            for (;cmp.compare(container[i], middleElem) == Ordering.LESSER; i++) {
                 if (i == length - 1) {
                     break;
                 }
             };
 
-            for (;cmp.compare(jThElem, middleElem) == Ordering.GREATER; j--) {
+            for (;cmp.compare(container[j], middleElem) == Ordering.GREATER; j--) {
                 if (j == 0) {
                     break;
                 }
@@ -169,6 +168,30 @@ public class TaskList <T> {
         container[j] = tmp;
     }
 
+    /**
+     * Метод для сравнения списков
+     * @param obj список для сравнения
+     * @return равенство списков
+     */
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TaskList)) {
+            return false;
+        }
+
+        TaskList<Object> castedObj = (TaskList<Object>) obj;
+        if (castedObj.getLength() != getLength()) {
+            return false;
+        }
+
+        for (int i = 0; i < getLength(); i++) {
+            if (!container[i].equals(castedObj.at(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private void maybeThrow(int index) {
         if (index >= length || index < 0) {
             throw new IndexOutOfBoundsException();
@@ -192,7 +215,7 @@ public class TaskList <T> {
         EQUAL,
         GREATER;
 
-        public static Ordering from(int a, int b) {
+        public static Ordering compareIntegers(int a, int b) {
             if (a > b) {
                 return GREATER;
             }
